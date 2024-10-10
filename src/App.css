@@ -1,0 +1,35 @@
+#root {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  gap: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form label {
+  font-size: .9em;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+ul {
+  text-align: left;
+}
