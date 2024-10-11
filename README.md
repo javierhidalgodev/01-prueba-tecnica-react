@@ -60,3 +60,15 @@ npm i -D vitest happy-dom @testing-library/react @testing-library/user-event
 
 - [x] Creación de un componente `Item` que sea renderizado por cada elemento de la lista.
 - [x] Creación de un `customHook` para la gestión del estado de los elementos, así como las funciones para crear y eliminar elementos `useItems`.
+
+### Testing de HOOKS
+
+- [x] Nos traemos `renderHook` y `act` de `@testing-library/react`.
+- [x] Renderizamos el `useEffect` por medio de un *callback*, y extraemos la propiedad `results`.
+- [x] Nos damos cuenta que también tiene una propiedad `rerender()`. Esta función renderiza de nuevo el *custom hoook*, pero suele tener más sentido para ver la reacción del mismo a elementos que afectan desde fuera, como podrian ser las *props*.
+
+### Ejercicios propuestos
+
+- [ ] Utilizar `reducer` en las acciones del *custom hook*.
+- [ ] Testear `useSEO()`.
+- [ ] *Responsive design*.
