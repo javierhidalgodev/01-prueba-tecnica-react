@@ -1,29 +1,22 @@
-import { useState } from 'react'
 import './App.css'
+import { Item } from './components/Item'
+import { useItems } from './hooks/useItem'
+import { useSEO } from './hooks/useSEO'
 
-// Interfaz
-export interface ItemI {
-  id: string,
-  timestamp: Date,
-  name: string
+const SEO = {
+  title: 'Prueba técnica React',
+  description: 'Prueba técnica de React para comprobar las capacidades de un aspirante al puesto'
 }
 
-// Mock temporal
-export const itemsData: ItemI[] = [
-  {
-    id: crypto.randomUUID(),
-    timestamp: new Date(),
-    name: 'Libros 📚'
-  },
-  {
-    id: crypto.randomUUID(),
-    timestamp: new Date(),
-    name: 'Películas 🎬'
-  },
-]
-
 function App() {
-  const [items, setItems] = useState(itemsData)
+  // * Se recupera del custom hook todo lo necesario para el funcionamiento del componente
+  const { items, addItem, removeItem } = useItems()
+
+  // SEO
+  useSEO({
+    title: `[${items.length}] - Prueba técnica`,
+    description: SEO.description
+  })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -36,31 +29,23 @@ function App() {
 
     if (!isInput) return
 
-    const newItem: ItemI = {
-      id: crypto.randomUUID(),
-      timestamp: new Date(),
-      name: input.value
-    }
-
-    // Mala práctica, ya que no podemos asegurar que tenemos la último versión del estado
-    /* setItems([
-      ...items,
-      newItem
-    ]) */
-
-    // Nos aseguramos que SIEMPRE tendremos la última versión del estado, independientemente de los cambios que pueda haber.
-    setItems((prevItems) => {
-      return [...prevItems, newItem]
-    })
+    addItem(input.value)
 
     input.value = ''
+  }
+
+  // Para manejar la eliminación de tareas es mejor crear una función
+  const createHandleRemoveItem = (id: string) => {
+    return () => {
+      removeItem(id)
+    }
   }
 
   return (
     <main>
       <aside>
         <h1>Prueba técnica</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} aria-label='Formulario para añadir elementos a una lista'>
           <label htmlFor="">
             Elemento a introducir:
           </label>
@@ -76,20 +61,17 @@ function App() {
       </aside>
       <section>
         <h2>Lista de elementos</h2>
-        <ul>
-          {
-            items.map(item => {
-              return (
-                <li key={item.id}>
-                  {item.name} - Añadido {item.timestamp.toLocaleDateString()}
-                  <button onClick={() => setItems((prevItems) => {
-                    return prevItems.filter(i => i.id !== item.id)
-                  })}>Delete</button>
-                </li>
-              )
-            })
-          }
-        </ul>
+        {
+          items.length === 0
+            ? <p>No elements here!</p>
+            : <ul>{
+              items.map(item => {
+                return (
+                  <Item {...item} key={item.id} handleClick={createHandleRemoveItem(item.id)} />
+                )
+              })
+            }</ul>
+        }
       </section>
     </main>
   )

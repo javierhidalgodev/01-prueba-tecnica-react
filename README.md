@@ -11,7 +11,52 @@ Crear una app en React que implemente un campo de texto y botón para añadir un
 Cuando se hace click en el botón, el texto en el campo de entrada debe agregarse a continuación en una lista de elementos.
 
 Además, cada vez que se hace click en cualquier elemento de la lista, debe eliminarse de la lista.
+
+- [ ] Dar importancia a la funcionalidad y usabilidad, más que al diseño visual.
+- [ ] El código debe ser enteramente desarrollado en Typescript.
+
+---
+
+Lista de seguimiento de tareas:
+
+### Primeros pasos y generación de la UI
+
+- [x] Iniciar proyecto con `create vite@latest` y repositorio.
+- [x] Reutilizar código `CSS` y limpiar componentes y carpetas.
+- [x] Iniciar interfaz de usuario básica con representación de datos ficticia.
+
+### Funcionalidad
+
+- [x] Función de agregado de elementos a la lista.
+  - [x] Tipar correctamente (interfaces).
+  - [x] Se pueden usar varias estrategias, como `FormData`. En este ocasión se recomienda acceder a los `elements` del formulario, y llamar al `input` por su nombre (`name`) con `namedItem`. Además se comprueba que sea un `input instaceof HTMLInputElement` para recuperar correctamente su `value`. Hecho esto se crea el nuevo item y se modifica el estado.
+  - [x] Para la modificación del estado se recomienda usar la función de recuperación del estado previo.
+
+```ts
+setItem(prevItems => [...prevItems, newItem])
+```
+- [x] Función para eliminar elementos de la lista:
+  - [x] Se recomienda crear una función que se encargue de crear una función para cada uno de los elementos de la lista, aciendo más eficaces las operaciones.
+
+```ts
+const createHandleRemoveItem = (id: ItemID) => {
+  return () => {
+    setItems(prevItems => {
+      return prevItems.filter(currentItem.id !== id)
+    })
+  }
+}
 ```
 
-- [] Dar importancia a la funcionalidad y usabilidad, más que al diseño visual.
-  [] El código debe ser enteramente desarrollado en Typescript.
+### Testing
+
+- [x] Instalar dependencias
+```
+npm i -D vitest happy-dom @testing-library/react @testing-library/user-event
+```
+- [x] Utilizar las funciones de `render` y `screen` de `@testing-library/react`, junto con las funciones que provee `@testing-library/user-event`, para simular un usuario que realice acciones de navegador.
+
+### Refactoring
+
+- [x] Creación de un componente `Item` que sea renderizado por cada elemento de la lista.
+- [x] Creación de un `customHook` para la gestión del estado de los elementos, así como las funciones para crear y eliminar elementos `useItems`.
